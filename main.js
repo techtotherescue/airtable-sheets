@@ -28,6 +28,7 @@ function main() {
     var sheet = new BackupSheet(sheet_name, FIELDS_TO_BACKUP[airtable_table_name]);
     var airtable_data = fetchDataFromAirtable(airtable_table_name, airtable_view_name);
     sheet.backupData(airtable_data);
+    sheet.deleteBackupsOlderThanNDays(60);
   }
 }
 
