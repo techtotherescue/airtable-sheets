@@ -21,13 +21,16 @@ const FIELDS_TO_BACKUP = {
   ],
 }
 
+
 function main() {
   for (let [airtable_table_name, airtable_view_name] of BACKUP_CONFIG){
     console.log(`Backing up table: '${airtable_table_name}'...`);
     let sheet_name = airtable_table_name;
-    var sheet = new BackupSheet(sheet_name, FIELDS_TO_BACKUP[airtable_table_name]);
+    var sheet = new MetricsSheet(sheet_name, FIELDS_TO_BACKUP[airtable_table_name]);
     var airtable_data = fetchDataFromAirtable(airtable_table_name, airtable_view_name);
     sheet.backupData(airtable_data);
+    const today = new Date().toISOString().slice(0, 10);  // `YYYY-MM-DD` format
+    sheet.addComputedFields(today);
     sheet.deleteBackupsOlderThanNDays(60);
   }
 }
